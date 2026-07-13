@@ -1,0 +1,46 @@
+import { NextRequest } from "next/server";
+import { getCurrentUser } from "@/lib/auth/session";
+import { ok, fail, ErrorCode } from "@/lib/api/response";
+import { getReport, deleteReport } from "@/lib/ai/services/report-service";
+
+export const runtime = "nodejs";
+
+/** GET /api/reports/:id — full report (sections + markdown). */
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return fail("Authentication required.", {
+      status: 401,
+      code: ErrorCode.UNAUTHORIZED,
+    });
+  }
+  const { id } = await params;
+  const report = await getReport(user.id, id);
+  if (!report) {
+    return fail("Report not found.", { status: 404, code: ErrorCode.NOT_FOUND });
+  }
+  return ok(report, "OK");
+}
+
+/** DELETE /api/reports/:id */
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return fail("Authentication required.", {
+      status: 401,
+      code: ErrorCode.UNAUTHORIZED,
+    });
+  }
+  const { id } = await params;
+  const deleted = await deleteReport(user.id, id);
+  if (!deleted) {
+    return fail("Report not found.", { status: 404, code: ErrorCode.NOT_FOUND });
+  }
+  return ok({ id }, "Report deleted.");
+}

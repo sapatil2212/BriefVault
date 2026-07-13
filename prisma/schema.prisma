@@ -1,0 +1,592 @@
+// BriefVault — authentication schema
+// Datasource: MySQL, Client: Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrgType {
+  LAW_FIRM
+  CHARTERED_ACCOUNTANT
+  COMPANY_SECRETARY
+  TAX_CONSULTANT
+  CORPORATE_LEGAL_TEAM
+  BANK_NBFC
+  GOVERNMENT
+  STARTUP
+  OTHER
+}
+
+/**
+ * Account type. The platform has exactly two: every portal signup is a USER
+ * with full dashboard access; the single SUPER_ADMIN is the platform owner who
+ * signs in via the dedicated env-based admin login. DB rows are always USER —
+ * super-admin access is granted by the env credentials, not a database role.
+ */
+enum UserRole {
+  USER
+  SUPER_ADMIN
+}
+
+/**
+ * Account lifecycle state. Drives the approval workflow and login gating.
+ * Managed via a configurable state machine (see lib/subscriptions/state-machine).
+ *   PENDING   → awaiting admin approval (paid plans) or pre-verification.
+ *   ACTIVE    → approved & allowed to sign in (free plans skip approval).
+ *   REJECTED  → application declined; cannot sign in.
+ *   SUSPENDED → previously active, access revoked by an admin.
+ */
+enum UserStatus {
+  PENDING
+  ACTIVE
+  REJECTED
+  SUSPENDED
+}
+
+/** Subscription lifecycle, independent of the account (billing) state. */
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+/** Decision recorded for each approval-workflow transition. */
+enum ApprovalDecision {
+  PENDING
+  APPROVED
+  REJECTED
+  INFO_REQUESTED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  firstName     String
+  lastName      String
+  phone         String
+  email         String   @unique
+  organization  String
+  orgType       OrgType
+  designation   String?
+  country       String?
+  passwordHash  String
+  emailVerified Boolean  @default(false)
+  verifiedAt    DateTime?
+  role          UserRole   @default(USER)
+  status        UserStatus @default(ACTIVE)
+  // Signup context captured for the admin approval review.
+  signupIp        String?
+  signupUserAgent String? @db.Text
+  lastLoginAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  otps          VerificationOtp[]
+  sessions      Session[]
+  documents     Document[]
+  notifications Notification[]
+  folders       Folder[]
+  subscription  Subscription?
+  approvals     Approval[]
+
+  @@index([emailVerified, createdAt])
+  @@index([role, status])
+  @@index([status, createdAt])
+  @@map("users")
+}
+
+/**
+ * A subscription plan. Kept fully database-driven so plans, prices, limits, and
+ * feature flags can be tuned without a deploy. `limits` and `features` are JSON
+ * blobs (see lib/plans/types) so new dimensions (coupons, KYC, referral) can be
+ * added without a migration.
+ */
+model Plan {
+  id               String   @id @default(cuid())
+  key              String   @unique // FREE | STARTER | PROFESSIONAL | ENTERPRISE
+  name             String
+  tagline          String?
+  priceMonthly     Int      @default(0) // major currency units (INR rupees)
+  currency         String   @default("INR")
+  requiresApproval Boolean  @default(true)
+  isPopular        Boolean  @default(false)
+  isActive         Boolean  @default(true)
+  sortOrder        Int      @default(0)
+  limits           Json     // { documentsPerMonth, pagesPerDocument, aiQuestions, storageMb, users, ... }
+  features         Json     // string[] of marketing feature labels
+  featureFlags     Json?    // { timeline, riskAnalysis, apiAccess, ... } for gating
+  subscriptions    Subscription[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+  @@map("plans")
+}
+
+/** A user's current plan assignment and billing lifecycle. One per user. */
+model Subscription {
+  id               String             @id @default(cuid())
+  userId           String             @unique
+  planId           String
+  status           SubscriptionStatus @default(PENDING)
+  startedAt        DateTime?
+  currentPeriodEnd DateTime?          // renewal date
+  cancelledAt      DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan             Plan               @relation(fields: [planId], references: [id])
+
+  @@index([status])
+  @@index([planId])
+  @@map("subscriptions")
+}
+
+/**
+ * Audit trail for the approval workflow. Every decision (approve / reject /
+ * request-info) appends a row, preserving who acted, when, and why. The
+ * requested plan is stored so the history is meaningful even after plan changes.
+ */
+model Approval {
+  id               String           @id @default(cuid())
+  userId           String
+  requestedPlanKey String
+  decision         ApprovalDecision @default(PENDING)
+  remarks          String?          @db.Text
+  approvedBy       String?          // admin identity (env super-admin id/email)
+  approvedAt       DateTime?
+  createdAt        DateTime         @default(now())
+
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([decision, createdAt])
+  @@map("approvals")
+}
+
+/**
+ * Lifecycle of a demo-request/contact enquiry submitted from the public
+ * marketing site's "Book a demo" form.
+ *   NEW        → just submitted, not yet reviewed.
+ *   CONTACTED  → an admin/sales rep has reached out.
+ *   SCHEDULED  → a demo call is booked.
+ *   CLOSED     → resolved (converted, declined, or no longer relevant).
+ */
+enum DemoEnquiryStatus {
+  NEW
+  CONTACTED
+  SCHEDULED
+  CLOSED
+}
+
+/**
+ * A "Book a demo" / contact form submission from the public site. Captures the
+ * full form (name, work email, company, business type, phone, preferred demo
+ * slot, message) so the admin console can triage and follow up, independent of
+ * the authenticated-user tables.
+ */
+model DemoEnquiry {
+  id           String            @id @default(cuid())
+  name         String
+  email        String
+  company      String
+  businessType String
+  phone        String
+  whatsapp     String?
+  preferredDate DateTime?
+  preferredTime String?
+  message      String?           @db.Text
+  status       DemoEnquiryStatus @default(NEW)
+  notes        String?           @db.Text
+  ipAddress    String?
+  userAgent    String?           @db.Text
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email])
+  @@map("demo_enquiries")
+}
+
+enum QueueJobStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
+
+/**
+ * Durable, database-backed job queue (free, no Redis). A polling worker claims
+ * due PENDING jobs atomically, processes them, and retries with backoff. Serves
+ * as the free/open-source alternative to a Redis/BullMQ setup.
+ */
+model QueueJob {
+  id          String         @id @default(cuid())
+  type        String
+  payload     Json
+  status      QueueJobStatus @default(PENDING)
+  attempts    Int            @default(0)
+  maxAttempts Int            @default(3)
+  runAt       DateTime       @default(now())
+  lockedAt    DateTime?
+  lockedBy    String?
+  lastError   String?        @db.Text
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([status, runAt])
+  @@map("queue_jobs")
+}
+
+/** Per-call log of AI generations for observability (tokens, latency, cost). */
+model AiRequestLog {
+  id            String   @id @default(cuid())
+  userId        String
+  documentId    String?
+  kind          String
+  provider      String
+  model         String
+  promptVersion String?
+  tokensUsed    Int?
+  latencyMs     Int?
+  costUsd       Float?
+  confidence    Float?
+  success       Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([documentId])
+  @@map("ai_request_logs")
+}
+
+/** Audit trail of security-relevant user actions (deletes, renames, etc.). */
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("audit_logs")
+}
+
+/** A user-owned folder for organizing documents. */
+model Folder {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documents Document[]
+
+  @@index([userId, createdAt])
+  @@map("folders")
+}
+
+enum NotificationType {
+  DOCUMENT_READY
+  DOCUMENT_FAILED
+  SYSTEM
+  INFO
+}
+
+/** In-app notification for a user. */
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType @default(INFO)
+  title     String
+  body      String?          @db.Text
+  link      String?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
+  @@map("notifications")
+}
+
+model VerificationOtp {
+  id         String   @id @default(cuid())
+  userId     String
+  codeHash   String
+  expiresAt  DateTime
+  attempts   Int      @default(0)
+  consumedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("verification_otps")
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  userId     String
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  ipAddress  String?
+  userAgent  String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Document Intelligence — AI Engine (Phase 1)
+// Models are intentionally provider-agnostic. Embeddings are persisted here for
+// the default DB-backed vector store; swapping to Pinecone/Qdrant/Weaviate only
+// changes the VectorStore implementation, not the schema.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** High-level lifecycle of a document as it moves through the AI pipeline. */
+enum DocumentStatus {
+  UPLOADED
+  PROCESSING
+  READY
+  FAILED
+}
+
+/** Detected source kind. Drives which extractor/OCR path is used. */
+enum DocumentKind {
+  PDF
+  DOCX
+  TXT
+  SCANNED_PDF
+  IMAGE
+  UNKNOWN
+}
+
+/** Independent, replaceable pipeline stages. Mirrors the processing workflow. */
+enum ProcessingStage {
+  VALIDATION
+  EXTRACTION
+  CLEANING
+  METADATA
+  CHUNKING
+  EMBEDDING
+  INDEXING
+  ANALYSIS
+  COMPLETED
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
+
+/** Kinds of generated reports. */
+enum ReportType {
+  EXECUTIVE
+  CLIENT
+  COMPLIANCE
+  LEGAL_OPINION
+}
+
+/** Type of structured intelligence produced by an AI module. */
+enum AiResultKind {
+  EXECUTIVE_SUMMARY
+  ONE_PAGE_SUMMARY
+  QUICK_SUMMARY
+  KEY_HIGHLIGHTS
+  TIMELINE
+  CASE_FACTS
+  QUESTIONS_BEFORE_COURT
+  ARGUMENTS
+  FINAL_DECISION
+  CASE_CITATIONS
+  RATIO_DECIDENDI
+  OBITER_DICTA
+  SECTIONS_OF_LAW
+  IMPORTANT_PARAGRAPHS
+  RISK_ANALYSIS
+  COMPLIANCE_CHECKLIST
+  ACTION_ITEMS
+  DEADLINES
+  MONETARY_INFO
+}
+
+model Document {
+  id            String         @id @default(cuid())
+  userId        String
+  folderId      String?
+  title         String
+  kind          DocumentKind   @default(UNKNOWN)
+  status        DocumentStatus @default(UPLOADED)
+  mimeType      String?
+  sizeBytes     Int?
+  language      String?
+  pageCount     Int?
+  storageKey    String?  @db.Text
+  storageUrl    String?  @db.Text
+  // Raw source characters (post-extraction). Cleaned text lives in `cleanedText`.
+  rawText       String?        @db.LongText
+  cleanedText   String?        @db.LongText
+  errorMessage  String?        @db.Text
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?
+
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder        Folder?         @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  metadata      DocumentMetadata?
+  chunks        DocumentChunk[]
+  results       AiResult[]
+  jobs          ProcessingJob[]
+  reports       Report[]
+
+  @@index([userId, status])
+  @@index([folderId])
+  @@index([createdAt])
+  @@index([deletedAt])
+  @@map("documents")
+}
+
+/** Extracted legal metadata, stored separately from the document body. */
+model DocumentMetadata {
+  id                 String   @id @default(cuid())
+  documentId         String   @unique
+  documentTitle      String?
+  court              String?
+  authority          String?
+  judge              String?
+  caseNumber         String?
+  parties            Json?    // { petitioner: string[], respondent: string[] }
+  decisionDate       DateTime?
+  notificationNumber String?
+  circularNumber     String?
+  acts               Json?    // string[]
+  sections           Json?    // string[]
+  regulations        Json?    // string[]
+  keywords           Json?    // string[]
+  confidence         Float    @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  document           Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("document_metadata")
+}
+
+/** A semantically-bounded chunk (heading/section/paragraph aware). */
+model DocumentChunk {
+  id           String   @id @default(cuid())
+  documentId   String
+  index        Int      // ordinal position within the document
+  content      String   @db.Text
+  heading      String?
+  pageNumber   Int?
+  paragraphNo  Int?
+  tokenCount   Int?
+  metadata     Json?    // source reference, section labels, etc.
+  createdAt    DateTime @default(now())
+
+  document     Document          @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  embedding    DocumentEmbedding?
+
+  @@unique([documentId, index])
+  @@index([documentId])
+  @@map("document_chunks")
+}
+
+/** Persisted vector for the default DB-backed VectorStore implementation. */
+model DocumentEmbedding {
+  id          String   @id @default(cuid())
+  documentId  String
+  chunkId     String   @unique
+  provider    String   // e.g. "openai", "local"
+  model       String   // e.g. "text-embedding-3-small"
+  dimensions  Int
+  vector      Json     // number[]
+  createdAt   DateTime @default(now())
+
+  chunk       DocumentChunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@map("document_embeddings")
+}
+
+/** Structured AI output for a document, one row per module kind (latest wins). */
+model AiResult {
+  id          String       @id @default(cuid())
+  documentId  String
+  kind        AiResultKind
+  payload     Json         // module-specific structured output
+  citations   Json?        // [{ chunkId, page, paragraph, quote }]
+  confidence  Float        @default(0)
+  provider    String?
+  model       String?
+  tokensUsed  Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  document    Document     @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, kind])
+  @@index([documentId])
+  @@map("ai_results")
+}
+
+/** Tracks a single pipeline stage execution for observability + retries. */
+model ProcessingJob {
+  id          String          @id @default(cuid())
+  documentId  String
+  stage       ProcessingStage
+  status      JobStatus       @default(PENDING)
+  attempts    Int             @default(0)
+  error       String?         @db.Text
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  document    Document        @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId, stage])
+  @@map("processing_jobs")
+}
+
+/** A generated report (executive/client/compliance/legal opinion). */
+model Report {
+  id          String     @id @default(cuid())
+  userId      String
+  documentId  String
+  type        ReportType
+  title       String
+  /** Structured sections: [{ heading, body }]. */
+  sections    Json
+  /** Rendered markdown for preview/export. */
+  markdown    String     @db.LongText
+  provider    String?
+  model       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  document    Document   @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([documentId])
+  @@map("reports")
+}
