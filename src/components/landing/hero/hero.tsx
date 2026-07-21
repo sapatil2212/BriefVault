@@ -32,7 +32,7 @@ export function Hero() {
             <motion.div custom={0} variants={item} initial="hidden" animate="visible">
               <Badge variant="default" className="gap-1.5">
                 <Sparkles className="h-3.5 w-3.5" />
-                AI Legal Intelligence Platform
+                Legal Intelligence Platform
               </Badge>
             </motion.div>
 
@@ -57,7 +57,7 @@ export function Hero() {
               className="mt-6 text-balance text-lg leading-relaxed text-muted-foreground"
             >
               Instantly digest contracts, judgments, compliance reports, and complex documents.
-              Extract key takeaways, risk highlights, deadlines, and citation-backed insights with AI.
+              Extract key takeaways, risk highlights, deadlines, and citation-backed insights effortlessly.
             </motion.p>
 
             <motion.div
