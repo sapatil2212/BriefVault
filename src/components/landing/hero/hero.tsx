@@ -56,9 +56,8 @@ export function Hero() {
               animate="visible"
               className="mt-6 text-balance text-lg leading-relaxed text-muted-foreground"
             >
-              Upload judgments, circulars, notifications, contracts, and compliance
-              documents. Get instant summaries, legal insights, deadlines, risks, and
-              citation-backed answers powered by AI.
+              Instantly digest contracts, judgments, compliance reports, and complex documents.
+              Extract key takeaways, risk highlights, deadlines, and citation-backed insights with AI.
             </motion.p>
 
             <motion.div

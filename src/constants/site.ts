@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "BriefVault",
   title: "BriefVault — AI-Powered Legal Intelligence Platform",
   description:
-    "Upload judgments, circulars, notifications, contracts, and compliance documents. Get instant summaries, legal insights, deadlines, risks, and citation-backed answers powered by AI.",
+    "Instantly digest contracts, judgments, compliance reports, and complex documents. Extract key takeaways, risk highlights, deadlines, and citation-backed insights with AI.",
   url: "https://briefvault.ai",
   ogImage: "https://briefvault.ai/og.png",
   tagline: "Software that summarizes documents efficiently and saves time.",
