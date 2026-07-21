@@ -47,7 +47,7 @@ http://localhost:3000
 ### AI Setup ✅
 ```env
 Provider: Google Gemini
-Model: gemini-2.5-flash
+Model: gemini-3.5-flash
 Embedding: gemini-embedding-001
 Vector Store: Database (MySQL)
 ```
@@ -64,7 +64,7 @@ Just change in `.env`:
 ```env
 # Switch to OpenRouter
 AI_LLM_PROVIDER="openrouter"
-AI_LLM_MODEL="google/gemini-2.5-flash"
+AI_LLM_MODEL="google/gemini-3.5-flash"
 # or
 AI_LLM_MODEL="anthropic/claude-3.5-sonnet"
 ```
@@ -233,7 +233,7 @@ curl -X POST http://localhost:3000/api/ai/ask \
 ```env
 # LLM Configuration
 AI_LLM_PROVIDER="gemini"          # Provider selection
-AI_LLM_MODEL="gemini-2.5-flash"   # Model selection
+AI_LLM_MODEL="gemini-3.5-flash"   # Model selection
 AI_MAX_CONTEXT_CHUNKS="8"         # Context window
 AI_MIN_CONFIDENCE="0.3"           # Confidence threshold
 AI_REQUEST_TIMEOUT_MS="60000"     # 60 second timeout

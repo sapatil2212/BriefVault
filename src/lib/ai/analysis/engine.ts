@@ -96,7 +96,7 @@ export async function runAnalysis(
           { role: "system", content: def.system },
           { role: "user", content: def.buildUser(documentTitle, context) },
         ],
-        { json: true, temperature: 0.2 }
+        { json: true, temperature: 0.2, model: aiConfig.llm.premiumModel }
       );
       // Validation gate: schema (Zod) + non-empty payload + citation availability.
       const parsed = resolveItemCitations(def.schema.parse(JSON.parse(completion.text)), context);

@@ -7,7 +7,7 @@ import { siteConfig } from "@/constants/site";
 export const metadata: Metadata = {
   title: "Refund & Cancellation Policy | BriefVault",
   description:
-    "Refund and cancellation terms for BriefVault SaaS plans operated by Brightwave Digital Products.",
+    "Refund and cancellation terms for BriefVault SaaS plans operated by Brightwave Digital Products LLP.",
   alternates: { canonical: "/refund-policy" },
 };
 
@@ -26,7 +26,7 @@ export default function RefundPolicyPage() {
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <h2 className="text-xl font-bold text-foreground">1. Subscription Cancellation</h2>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                At <strong>BriefVault</strong> (operated by <strong>Brightwave Digital Products</strong>), you may cancel your paid subscription plan at any time through your Account Settings or by emailing <a href={`mailto:${siteConfig.email}`} className="text-primary hover:underline">{siteConfig.email}</a>. Upon cancellation, your subscription will remain active until the conclusion of your current prepaid billing cycle, after which no further automatic recurring payments will be charged.
+                At <strong>BriefVault</strong> (operated by <strong>Brightwave Digital Products LLP</strong>), you may cancel your paid subscription plan at any time through your Account Settings or by emailing <a href={`mailto:${siteConfig.email}`} className="text-primary hover:underline">{siteConfig.email}</a>. Upon cancellation, your subscription will remain active until the conclusion of your current prepaid billing cycle, after which no further automatic recurring payments will be charged.
               </p>
             </div>
 
@@ -62,7 +62,7 @@ export default function RefundPolicyPage() {
                 To submit a refund or billing inquiry, please reach out with your registered account details:
               </p>
               <div className="mt-4 space-y-1.5 text-sm text-foreground font-medium">
-                <p>Company: <strong>Brightwave Digital Products (BriefVault)</strong></p>
+                <p>Company: <strong>Brightwave Digital Products LLP (BriefVault)</strong></p>
                 <p>Email: <a href={`mailto:${siteConfig.email}`} className="text-primary hover:underline">{siteConfig.email}</a></p>
                 <p>Phone: <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="text-primary hover:underline">{siteConfig.phone}</a></p>
                 <p>Location: <strong>Pune, Maharashtra, India</strong></p>

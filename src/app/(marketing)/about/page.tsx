@@ -4,7 +4,6 @@ import { PageHero } from "@/components/shared/page-hero";
 import { Container } from "@/components/shared/container";
 import { Section, SectionHeader } from "@/components/shared/section";
 import { StaggerGroup, Reveal } from "@/components/shared/motion";
-import { Stats } from "@/components/landing/stats/stats";
 import { CTA } from "@/components/landing/sections/cta";
 
 export const metadata: Metadata = {
@@ -87,7 +86,7 @@ export default function AboutPage() {
         </Container>
       </Section>
 
-      <Stats />
+
 
       <Section>
         <Container>

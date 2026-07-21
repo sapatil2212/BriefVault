@@ -1,7 +1,6 @@
 import { Hero } from "@/components/landing/hero/hero";
 import { Problem } from "@/components/landing/sections/problem";
 import { Solution } from "@/components/landing/sections/solution";
-import { Stats } from "@/components/landing/stats/stats";
 import { FeaturesGrid } from "@/components/landing/sections/features-grid";
 import { PlatformModules } from "@/components/landing/sections/platform-modules";
 import { HowItWorks } from "@/components/landing/sections/how-it-works";
@@ -17,7 +16,6 @@ export default function HomePage() {
       <Hero />
       <Problem />
       <Solution />
-      <Stats />
       <FeaturesGrid />
       <PlatformModules />
       <HowItWorks />

@@ -121,7 +121,7 @@ Provider-agnostic architecture supporting multiple LLM providers.
 **Current Configuration:**
 ```env
 AI_LLM_PROVIDER="gemini"
-AI_LLM_MODEL="gemini-2.5-flash"
+AI_LLM_MODEL="gemini-3.5-flash"
 AI_EMBEDDING_PROVIDER="gemini"
 ```
 
@@ -295,7 +295,7 @@ All major systems are configurable via `.env`:
 #### AI Configuration
 ```env
 AI_LLM_PROVIDER="gemini"              # openai | anthropic | gemini | openrouter | local
-AI_LLM_MODEL="gemini-2.5-flash"
+AI_LLM_MODEL="gemini-3.5-flash"
 AI_EMBEDDING_PROVIDER="gemini"
 AI_EMBEDDING_MODEL="gemini-embedding-001"
 AI_VECTOR_STORE="db"

@@ -7,7 +7,7 @@ import { siteConfig } from "@/constants/site";
 export const metadata: Metadata = {
   title: "Privacy Policy | BriefVault",
   description:
-    "Learn how BriefVault (Brightwave Digital Products) collects, uses, and protects your personal and document data.",
+    "Learn how BriefVault (Brightwave Digital Products LLP) collects, uses, and protects your personal and document data.",
   alternates: { canonical: "/privacy-policy" },
 };
 
@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <h2 className="text-xl font-bold text-foreground">1. Introduction & Entity Details</h2>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                Welcome to <strong>BriefVault</strong>, an AI-powered legal intelligence platform owned and operated by <strong>Brightwave Digital Products</strong> (&quot;Company&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), headquartered in <strong>Pune, Maharashtra, India</strong>. We respect your privacy and are committed to protecting the personal data and documents you upload to our platform.
+                Welcome to <strong>BriefVault</strong>, an AI-powered legal intelligence platform owned and operated by <strong>Brightwave Digital Products LLP</strong> (&quot;Company&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), headquartered in <strong>Pune, Maharashtra, India</strong>. We respect your privacy and are committed to protecting the personal data and documents you upload to our platform.
               </p>
             </div>
 
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-foreground">7. Security Measures</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                We employ industry-standard encryption in transit (TLS 1.3) and at rest (AES-256), multi-tenant access controls, role-based security policies, and continuous monitoring to guard your information against unauthorized disclosure.
+                We employ industry-standard encryption in transit (TLS), hashed password storage, and account-level access controls to guard your information against unauthorized disclosure.
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export default function PrivacyPolicyPage() {
                 For questions regarding this Privacy Policy, data access requests, or privacy concerns, please contact our privacy desk:
               </p>
               <div className="mt-4 space-y-1.5 text-sm text-foreground font-medium">
-                <p>Entity: <strong>Brightwave Digital Products (BriefVault)</strong></p>
+                <p>Entity: <strong>Brightwave Digital Products LLP (BriefVault)</strong></p>
                 <p>Address: <strong>Pune, Maharashtra, India</strong></p>
                 <p>Email: <a href={`mailto:${siteConfig.email}`} className="text-primary hover:underline">{siteConfig.email}</a></p>
                 <p>Phone: <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="text-primary hover:underline">{siteConfig.phone}</a></p>

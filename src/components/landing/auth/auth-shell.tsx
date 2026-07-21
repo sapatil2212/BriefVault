@@ -10,7 +10,7 @@ const easing = [0.22, 1, 0.36, 1] as const;
 
 const highlights = [
   "Citation-backed answers, never a hallucination",
-  "SOC 2 Type II · enterprise-grade security",
+  "Encrypted in transit · full audit trails",
   "Value on day one — no lengthy setup",
 ];
 

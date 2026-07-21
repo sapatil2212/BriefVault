@@ -102,7 +102,7 @@ export async function generateExecutiveSummary(
           { role: "system", content: EXECUTIVE_SUMMARY_SYSTEM },
           { role: "user", content: buildExecutiveSummaryUser(documentTitle, context) },
         ],
-        { json: true, temperature: 0.2 }
+        { json: true, temperature: 0.2, model: aiConfig.llm.premiumModel }
       );
 
       const parsed = llmSchema.parse(JSON.parse(completion.text));

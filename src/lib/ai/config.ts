@@ -24,6 +24,7 @@ const envSchema = z.object({
     ])
     .default("extractive"),
   AI_LLM_MODEL: z.string().default("gpt-4o-mini"),
+  AI_LLM_PREMIUM_MODEL: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
   OPENAI_BASE_URL: z.string().url().default("https://api.openai.com/v1"),
 
@@ -71,6 +72,11 @@ const envSchema = z.object({
     .transform((v) => v === "true"),
   OCR_LANGUAGES: z.string().default("eng"),
 
+  AI_AUTO_ANALYZE: z
+    .enum(["true", "false"])
+    .default("true")
+    .transform((v) => v === "true"),
+
   // Behaviour
   AI_MAX_CONTEXT_CHUNKS: z.coerce.number().int().positive().default(8),
   AI_REQUEST_TIMEOUT_MS: z.coerce.number().int().positive().default(60_000),
@@ -94,6 +100,7 @@ export const aiConfig = {
   llm: {
     provider: env.AI_LLM_PROVIDER,
     model: env.AI_LLM_MODEL,
+    premiumModel: env.AI_LLM_PREMIUM_MODEL || env.AI_LLM_MODEL,
     openaiApiKey: env.OPENAI_API_KEY,
     openaiBaseUrl: env.OPENAI_BASE_URL,
     anthropicApiKey: env.ANTHROPIC_API_KEY,
@@ -148,6 +155,7 @@ export const aiConfig = {
     enabled: env.OCR_ENABLED,
     languages: env.OCR_LANGUAGES,
   },
+  autoAnalyze: env.AI_AUTO_ANALYZE,
   maxContextChunks: env.AI_MAX_CONTEXT_CHUNKS,
   requestTimeoutMs: env.AI_REQUEST_TIMEOUT_MS,
   minConfidence: env.AI_MIN_CONFIDENCE,

@@ -90,7 +90,7 @@ export class OpenAiLlmProvider implements LlmProvider {
         method: "POST",
         headers,
         body: JSON.stringify({
-          model: this.model,
+          model: options.model ?? this.model,
           messages,
           temperature: options.temperature ?? 0.2,
           ...(options.maxTokens ? { max_tokens: options.maxTokens } : {}),
@@ -113,7 +113,7 @@ export class OpenAiLlmProvider implements LlmProvider {
       return {
         text,
         tokensUsed: json.usage?.total_tokens,
-        model: this.model,
+        model: options.model ?? this.model,
         provider: this.name,
       };
     } finally {
@@ -135,7 +135,7 @@ export class OpenAiLlmProvider implements LlmProvider {
       method: "POST",
       headers,
       body: JSON.stringify({
-        model: this.model,
+        model: options.model ?? this.model,
         messages,
         temperature: options.temperature ?? 0.2,
         ...(options.maxTokens ? { max_tokens: options.maxTokens } : {}),

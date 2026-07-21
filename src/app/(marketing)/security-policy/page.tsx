@@ -26,16 +26,16 @@ export default function SecurityPolicyPage() {
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <h2 className="text-xl font-bold text-foreground">1. Our Commitment to Security</h2>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                At <strong>BriefVault</strong> (developed and owned by <strong>Brightwave Digital Products</strong>), security is foundational to everything we build. Legal teams rely on BriefVault to process confidential contracts, briefs, and filings. We maintain rigorous technical and operational controls to safeguard your data.
+                At <strong>BriefVault</strong> (developed and owned by <strong>Brightwave Digital Products LLP</strong>), security is foundational to everything we build. Legal teams rely on BriefVault to process confidential contracts, briefs, and filings. We maintain rigorous technical and operational controls to safeguard your data.
               </p>
             </div>
 
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-foreground">2. Architecture & Data Encryption</h2>
               <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                <li><strong>Encryption in Transit:</strong> All HTTP traffic and API communications are encrypted using modern Transport Layer Security (TLS 1.3).</li>
-                <li><strong>Encryption at Rest:</strong> All persistent database records, document storage buckets, and vector indexes are encrypted using AES-256 standards.</li>
-                <li><strong>Multi-Tenant Isolation:</strong> Strict row-level tenant authorization policies ensure your workspace files are completely isolated from other users.</li>
+                <li><strong>Encryption in Transit:</strong> All HTTP traffic and API communications are encrypted using Transport Layer Security (TLS).</li>
+                <li><strong>Password Security:</strong> Account passwords are hashed (bcrypt) and never stored or transmitted in plain text.</li>
+                <li><strong>Account-Level Isolation:</strong> Access controls ensure your documents and workspace data are scoped to your account and not visible to other users.</li>
               </ul>
             </div>
 
@@ -56,7 +56,7 @@ export default function SecurityPolicyPage() {
             <div className="rounded-2xl border border-border/80 bg-muted/40 p-6">
               <h2 className="text-xl font-bold text-foreground">5. Security Support Desk</h2>
               <div className="mt-4 space-y-1.5 text-sm text-foreground font-medium">
-                <p>Entity: <strong>Brightwave Digital Products (BriefVault)</strong></p>
+                <p>Entity: <strong>Brightwave Digital Products LLP (BriefVault)</strong></p>
                 <p>Email: <a href={`mailto:${siteConfig.email}`} className="text-primary hover:underline">{siteConfig.email}</a></p>
                 <p>Phone: <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="text-primary hover:underline">{siteConfig.phone}</a></p>
                 <p>Address: <strong>Pune, Maharashtra, India</strong></p>

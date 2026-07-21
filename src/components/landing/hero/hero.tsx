@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -41,9 +41,12 @@ export function Hero() {
               variants={item}
               initial="hidden"
               animate="visible"
-              className="mt-6 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-[3.5rem] lg:leading-[1.05]"
+              className="mt-6 text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08]"
             >
-              AI That Understands Legal Documents in Minutes, Not Hours.
+              Software that summarizes documents{" "}
+              <span className="bg-gradient-to-r from-primary via-indigo-600 to-blue-500 bg-clip-text text-transparent">
+                efficiently and saves time.
+              </span>
             </motion.h1>
 
             <motion.p
@@ -79,16 +82,7 @@ export function Hero() {
               </Button>
             </motion.div>
 
-            <motion.div
-              custom={4}
-              variants={item}
-              initial="hidden"
-              animate="visible"
-              className="mt-6 flex items-center gap-2 text-sm text-muted-foreground"
-            >
-              <ShieldCheck className="h-4 w-4 text-success" />
-              SOC 2 Type II · Enterprise-grade security · No card required
-            </motion.div>
+
           </div>
 
           <motion.div

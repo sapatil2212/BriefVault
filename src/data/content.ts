@@ -55,7 +55,7 @@ export const whyBriefVault = [
   },
   {
     title: "Enterprise-grade security",
-    description: "SOC 2 Type II, encryption everywhere, SSO, and private deployment options.",
+    description: "Encryption everywhere, role-based access control, and full audit trails.",
   },
   {
     title: "Fast to value",
@@ -74,7 +74,7 @@ export const stats: Stat[] = [
   { value: 5, suffix: "M+", label: "Documents analyzed" },
   { value: 90, suffix: "%", label: "Reduction in review time" },
   { value: 1200, suffix: "+", label: "Teams onboarded" },
-  { value: 99.9, suffix: "%", label: "Uptime SLA" },
+  { value: 99.9, suffix: "%", label: "Platform uptime" },
 ];
 
 export const testimonials: Testimonial[] = [
@@ -84,7 +84,7 @@ export const testimonials: Testimonial[] = [
       "BriefVault turned a 400-page arbitration award into a one-page brief I could take straight into a client call. It has changed how our team works.",
     name: "Ananya Rao",
     role: "Partner",
-    company: "Rao & Associates",
+    company: "",
     avatar: "https://randomuser.me/api/portraits/women/68.jpg",
   },
   {
@@ -93,25 +93,25 @@ export const testimonials: Testimonial[] = [
       "The moment a new circular is released, we upload it and know the impact within minutes. The citation-backed answers are what earned our trust.",
     name: "Vikram Mehta",
     role: "Senior Chartered Accountant",
-    company: "Mehta & Co.",
+    company: "",
     avatar: "https://randomuser.me/api/portraits/men/32.jpg",
   },
   {
     id: "t3",
     quote:
       "We review hundreds of vendor contracts a month. BriefVault's comparison and risk flags catch things our team used to miss.",
-    name: "Sarah Chen",
+    name: "Shalini Iyer",
     role: "Head of Legal",
-    company: "Northwind Corp",
+    company: "",
     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
   },
   {
     id: "t4",
     quote:
       "Security and audit trails were non-negotiable for us. BriefVault passed our review comfortably and deployed in our private cloud.",
-    name: "Daniel Okafor",
+    name: "Devendra Joshi",
     role: "CISO",
-    company: "Meridian Bank",
+    company: "",
     avatar: "https://randomuser.me/api/portraits/men/76.jpg",
   },
   {
@@ -120,7 +120,7 @@ export const testimonials: Testimonial[] = [
       "As a small firm we don't have researchers. BriefVault gives us the leverage of a much larger team.",
     name: "Priya Nair",
     role: "Founding Attorney",
-    company: "Nair Legal",
+    company: "",
     avatar: "https://randomuser.me/api/portraits/women/12.jpg",
   },
   {
@@ -129,7 +129,7 @@ export const testimonials: Testimonial[] = [
       "The timeline extraction alone saves my secretariat team days every quarter. Compliance has never been this calm.",
     name: "Rahul Verma",
     role: "Company Secretary",
-    company: "Zenith Industries",
+    company: "",
     avatar: "https://randomuser.me/api/portraits/men/54.jpg",
   },
 ];
@@ -143,7 +143,7 @@ export const faqs: FaqItem[] = [
   {
     question: "Is my data secure and confidential?",
     answer:
-      "Yes. BriefVault is SOC 2 Type II compliant with encryption at rest and in transit, role-based access control, SSO, and full audit trails. Your documents are never used to train shared models, and private and on-premise deployment options are available.",
+      "Yes. Your documents are encrypted in transit, access is scoped to your account with full audit trails, and we never use your documents to train shared AI models.",
   },
   {
     question: "What document types can I upload?",

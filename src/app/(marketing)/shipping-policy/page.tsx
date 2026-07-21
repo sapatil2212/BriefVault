@@ -7,7 +7,7 @@ import { siteConfig } from "@/constants/site";
 export const metadata: Metadata = {
   title: "Shipping & Delivery Policy | BriefVault",
   description:
-    "Digital delivery and service activation guidelines for BriefVault cloud platform by Brightwave Digital Products.",
+    "Digital delivery and service activation guidelines for BriefVault cloud platform by Brightwave Digital Products LLP.",
   alternates: { canonical: "/shipping-policy" },
 };
 
@@ -26,7 +26,7 @@ export default function ShippingPolicyPage() {
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <h2 className="text-xl font-bold text-foreground">1. Digital Service Delivery</h2>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                <strong>BriefVault</strong> operated by <strong>Brightwave Digital Products</strong> is a 100% digital software-as-a-service (SaaS) cloud application. We do <strong>NOT</strong> ship physical goods, hardware, CDs, or tangible paper materials to your physical address.
+                <strong>BriefVault</strong> operated by <strong>Brightwave Digital Products LLP</strong> is a 100% digital software-as-a-service (SaaS) cloud application. We do <strong>NOT</strong> ship physical goods, hardware, CDs, or tangible paper materials to your physical address.
               </p>
             </div>
 
@@ -56,7 +56,7 @@ export default function ShippingPolicyPage() {
             <div className="rounded-2xl border border-border/80 bg-muted/40 p-6">
               <h2 className="text-xl font-bold text-foreground">5. Contact Information</h2>
               <div className="mt-4 space-y-1.5 text-sm text-foreground font-medium">
-                <p>Company: <strong>Brightwave Digital Products (BriefVault)</strong></p>
+                <p>Company: <strong>Brightwave Digital Products LLP (BriefVault)</strong></p>
                 <p>Email: <a href={`mailto:${siteConfig.email}`} className="text-primary hover:underline">{siteConfig.email}</a></p>
                 <p>Phone: <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="text-primary hover:underline">{siteConfig.phone}</a></p>
                 <p>Address: <strong>Pune, Maharashtra, India</strong></p>

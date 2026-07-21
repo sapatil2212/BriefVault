@@ -378,7 +378,7 @@ The Prisma generation error is a known Windows file-locking issue:
 Current setup uses Gemini:
 ```env
 AI_LLM_PROVIDER="gemini"
-AI_LLM_MODEL="gemini-2.5-flash"
+AI_LLM_MODEL="gemini-3.5-flash"
 ```
 
 OpenRouter is also configured and ready:

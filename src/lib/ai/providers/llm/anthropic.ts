@@ -60,7 +60,7 @@ export class AnthropicLlmProvider implements LlmProvider {
         method: "POST",
         headers: this.headers(),
         body: JSON.stringify({
-          model: this.model,
+          model: options.model ?? this.model,
           max_tokens: options.maxTokens ?? 2048,
           temperature: options.temperature ?? 0.2,
           ...(sys ? { system: sys } : {}),
@@ -89,7 +89,7 @@ export class AnthropicLlmProvider implements LlmProvider {
       const tokensUsed =
         (json.usage?.input_tokens ?? 0) + (json.usage?.output_tokens ?? 0) || undefined;
 
-      return { text, tokensUsed, model: this.model, provider: this.name };
+      return { text, tokensUsed, model: options.model ?? this.model, provider: this.name };
     } finally {
       clearTimeout(timeout);
     }
@@ -109,7 +109,7 @@ export class AnthropicLlmProvider implements LlmProvider {
       method: "POST",
       headers: this.headers(),
       body: JSON.stringify({
-        model: this.model,
+        model: options.model ?? this.model,
         max_tokens: options.maxTokens ?? 2048,
         temperature: options.temperature ?? 0.2,
         ...(system ? { system } : {}),

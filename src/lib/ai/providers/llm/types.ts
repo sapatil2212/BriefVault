@@ -8,6 +8,7 @@ export interface LlmCompletionOptions {
   /** Deterministic output for extraction-style tasks. */
   temperature?: number;
   maxTokens?: number;
+  model?: string;
   /** Request a JSON object response when the provider supports it. */
   json?: boolean;
   signal?: AbortSignal;

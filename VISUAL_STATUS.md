@@ -144,7 +144,7 @@
 ╠══════════════════════════════════════════════════════════════╣
 ║  Provider          Status      Model                         ║
 ╠══════════════════════════════════════════════════════════════╣
-║  🟢 Google Gemini   ACTIVE     gemini-2.5-flash             ║
+║  🟢 Google Gemini   ACTIVE     gemini-3.1-lite / 3.5        ║
 ║  🟢 OpenRouter      READY      Any model via aggregator     ║
 ║  🟡 OpenAI          CONFIG     gpt-4o, gpt-4o-mini          ║
 ║  🟡 Anthropic       CONFIG     claude-3.5-sonnet            ║

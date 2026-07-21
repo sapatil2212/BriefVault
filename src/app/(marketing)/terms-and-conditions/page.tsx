@@ -26,7 +26,7 @@ export default function TermsAndConditionsPage() {
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <h2 className="text-xl font-bold text-foreground">1. Acceptance of Terms</h2>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                These Terms &amp; Conditions (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;User&quot; or &quot;Customer&quot;) and <strong>Brightwave Digital Products</strong> (&quot;Company&quot;, &quot;we&quot;, or &quot;our&quot;), governing your access to and use of <strong>BriefVault</strong> ({siteConfig.url}). By registering, creating an account, or subscribing to any plan, you agree to comply fully with these Terms.
+                These Terms &amp; Conditions (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;User&quot; or &quot;Customer&quot;) and <strong>Brightwave Digital Products LLP</strong> (&quot;Company&quot;, &quot;we&quot;, or &quot;our&quot;), governing your access to and use of <strong>BriefVault</strong> ({siteConfig.url}). By registering, creating an account, or subscribing to any plan, you agree to comply fully with these Terms.
               </p>
             </div>
 
@@ -59,7 +59,7 @@ export default function TermsAndConditionsPage() {
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-foreground">5. Intellectual Property & Document Ownership</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                You retain sole copyright and proprietary ownership over all original documents uploaded to your BriefVault workspace. All technology, code, user interface designs, logos, trademarks, and AI analysis models remain the exclusive property of Brightwave Digital Products.
+                You retain sole copyright and proprietary ownership over all original documents uploaded to your BriefVault workspace. All technology, code, user interface designs, logos, trademarks, and AI analysis models remain the exclusive property of Brightwave Digital Products LLP.
               </p>
             </div>
 
@@ -90,7 +90,7 @@ export default function TermsAndConditionsPage() {
                 For questions regarding these Terms &amp; Conditions, please reach out to us:
               </p>
               <div className="mt-4 space-y-1.5 text-sm text-foreground font-medium">
-                <p>Company: <strong>Brightwave Digital Products</strong></p>
+                <p>Company: <strong>Brightwave Digital Products LLP</strong></p>
                 <p>Email: <a href={`mailto:${siteConfig.email}`} className="text-primary hover:underline">{siteConfig.email}</a></p>
                 <p>Phone: <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="text-primary hover:underline">{siteConfig.phone}</a></p>
                 <p>Address: <strong>Pune, Maharashtra, India</strong></p>

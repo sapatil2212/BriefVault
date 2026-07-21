@@ -50,7 +50,8 @@ export class GeminiLlmProvider implements LlmProvider {
     options.signal?.addEventListener("abort", () => controller.abort(), { once: true });
 
     try {
-      const url = `${aiConfig.llm.geminiBaseUrl}/models/${this.model}:generateContent?key=${aiConfig.llm.geminiApiKey}`;
+      const model = options.model ?? this.model;
+      const url = `${aiConfig.llm.geminiBaseUrl}/models/${model}:generateContent?key=${aiConfig.llm.geminiApiKey}`;
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,7 +85,7 @@ export class GeminiLlmProvider implements LlmProvider {
       return {
         text,
         tokensUsed: json.usageMetadata?.totalTokenCount,
-        model: this.model,
+        model: options.model ?? this.model,
         provider: this.name,
       };
     } finally {
@@ -101,7 +102,8 @@ export class GeminiLlmProvider implements LlmProvider {
       throw new Error("Gemini provider is not configured (missing GEMINI_API_KEY).");
     }
 
-    const url = `${aiConfig.llm.geminiBaseUrl}/models/${this.model}:streamGenerateContent?alt=sse&key=${aiConfig.llm.geminiApiKey}`;
+    const model = options.model ?? this.model;
+    const url = `${aiConfig.llm.geminiBaseUrl}/models/${model}:streamGenerateContent?alt=sse&key=${aiConfig.llm.geminiApiKey}`;
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

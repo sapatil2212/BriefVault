@@ -74,7 +74,7 @@ export function Footer() {
         {/* Bottom copyright */}
         <div className="mt-14 border-t border-border pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Copyright © {new Date().getFullYear()} BriefVault All rights reserved. | A product of Brightwave Digital Products
+            Copyright © {new Date().getFullYear()} BriefVault All rights reserved. | A PRODUCT OF BRIGHTWAVE DIGITAL PRODUCTS LLP.
           </p>
         </div>
       </Container>

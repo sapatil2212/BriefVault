@@ -216,12 +216,12 @@ Currently using **Google Gemini** but can switch to any provider:
 ```env
 # Current Setup
 AI_LLM_PROVIDER="gemini"
-AI_LLM_MODEL="gemini-2.5-flash"
+AI_LLM_MODEL="gemini-3.5-flash"
 GEMINI_API_KEY="..."
 
 # Alternative: OpenRouter
 AI_LLM_PROVIDER="openrouter"
-AI_LLM_MODEL="google/gemini-2.5-flash"
+AI_LLM_MODEL="google/gemini-3.5-flash"
 OPENROUTER_API_KEY="sk-or-v1-..."
 
 # Alternative: OpenAI

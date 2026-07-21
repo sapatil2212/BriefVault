@@ -1,6 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
 import { Prisma, type ProcessingStage } from "@prisma/client";
+import { aiConfig } from "@/lib/ai/config";
 import { cleanText, detectLanguage } from "@/lib/ai/processing/clean";
 import { extractMetadata } from "@/lib/ai/processing/metadata";
 import { chunkDocument } from "@/lib/ai/processing/chunk";
@@ -232,21 +233,23 @@ export async function processDocument(documentId: string): Promise<void> {
     // 7. Auto-generate the default analysis modules (best-effort) with bounded
     //    concurrency, so they run in parallel without overwhelming the provider.
     //    Populates Insights / Case Law / compliance views without manual clicks.
-    const ANALYSIS_CONCURRENCY = 3;
-    let cursor = 0;
-    const worker = async () => {
-      while (cursor < DEFAULT_ANALYSES.length) {
-        const kind = DEFAULT_ANALYSES[cursor++];
-        try {
-          await getOrCreateAnalysis(documentId, kind);
-        } catch (e) {
-          console.warn(`[pipeline] analysis ${kind} failed for ${documentId}:`, e);
+    if (aiConfig.autoAnalyze) {
+      const ANALYSIS_CONCURRENCY = 3;
+      let cursor = 0;
+      const worker = async () => {
+        while (cursor < DEFAULT_ANALYSES.length) {
+          const kind = DEFAULT_ANALYSES[cursor++];
+          try {
+            await getOrCreateAnalysis(documentId, kind);
+          } catch (e) {
+            console.warn(`[pipeline] analysis ${kind} failed for ${documentId}:`, e);
+          }
         }
-      }
-    };
-    await Promise.all(
-      Array.from({ length: Math.min(ANALYSIS_CONCURRENCY, DEFAULT_ANALYSES.length) }, worker)
-    );
+      };
+      await Promise.all(
+        Array.from({ length: Math.min(ANALYSIS_CONCURRENCY, DEFAULT_ANALYSES.length) }, worker)
+      );
+    }
 
     await prisma.document.update({
       where: { id: documentId },

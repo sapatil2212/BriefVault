@@ -60,7 +60,7 @@ export async function askQuestion(
   const sources = await store.searchSimilar(vector, {
     // Retrieve extra chunks so broad questions ("summarize", "key points",
     // "analyze page N") have enough grounding to synthesize a full answer.
-    topK: Math.max(aiConfig.maxContextChunks, 12),
+    topK: aiConfig.maxContextChunks,
     filter: documentIds.length ? { documentIds } : undefined,
     hybridWeight: 0.3,
     queryText: question,
@@ -85,7 +85,7 @@ export async function askQuestion(
           { role: "system", content: ASK_SYSTEM },
           { role: "user", content: buildAskUser(question, sources) },
         ],
-        { temperature: 0.3 }
+        { temperature: 0.3, maxTokens: 1024 }
       );
       const raw = completion.text.trim();
       const notFound = raw.length === 0 || raw.includes("NO_RELEVANT_CONTEXT");
@@ -152,7 +152,7 @@ export async function* askQuestionStream(
   const sources = await store.searchSimilar(vector, {
     // Retrieve extra chunks so broad questions ("summarize", "key points",
     // "analyze page N") have enough grounding to synthesize a full answer.
-    topK: Math.max(aiConfig.maxContextChunks, 12),
+    topK: aiConfig.maxContextChunks,
     filter: documentIds.length ? { documentIds } : undefined,
     hybridWeight: 0.3,
     queryText: question,
@@ -184,7 +184,7 @@ export async function* askQuestionStream(
           { role: "system", content: ASK_SYSTEM },
           { role: "user", content: buildAskUser(question, sources) },
         ],
-        { temperature: 0.3 }
+        { temperature: 0.3, maxTokens: 1024 }
       )) {
         full += delta;
         if (gateOpen) {

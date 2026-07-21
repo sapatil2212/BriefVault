@@ -32,8 +32,8 @@ export const solutions: Solution[] = [
     icon: FileSignature,
     title: "Company Secretaries",
     description:
-      "Stay ahead of filings and board obligations with auto-generated compliance checklists and reminders.",
-    outcomes: ["Filing calendars", "Board pack summaries", "Compliance checklists"],
+      "Stay ahead of filings and board obligations with auto-generated compliance checklists and timelines.",
+    outcomes: ["Statutory timelines", "Board pack summaries", "Compliance checklists"],
   },
   {
     id: "tax-consultants",
@@ -48,16 +48,16 @@ export const solutions: Solution[] = [
     icon: Building2,
     title: "Corporate Legal Teams",
     description:
-      "Bring contract intelligence to scale. Review, compare, and monitor obligations across your entire portfolio.",
-    outcomes: ["Contract intelligence", "Obligation tracking", "Portfolio risk view"],
+      "Bring contract intelligence to scale. Review, compare, and monitor obligations across your agreements.",
+    outcomes: ["Contract intelligence", "Obligation tracking", "Contract risk mapping"],
   },
   {
     id: "banks-nbfcs",
     icon: Landmark,
     title: "Banks & NBFCs",
     description:
-      "Monitor regulatory change and analyze exposure across thousands of documents with full audit trails.",
-    outcomes: ["Regulatory monitoring", "Exposure analysis", "Audit-ready trails"],
+      "Analyze regulatory documents and find risk exposure across your library with full audit trails.",
+    outcomes: ["Regulatory analysis", "Exposure analysis", "Audit-ready trails"],
   },
   {
     id: "government",

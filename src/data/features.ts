@@ -32,7 +32,7 @@ export const homeFeatures: Feature[] = [
   { id: "comparison", icon: GitCompareArrows, title: "Document Comparison", description: "Redline versions and detect material changes instantly." },
   { id: "multilanguage", icon: Languages, title: "Multi-language", description: "Analyze and summarize documents across regional languages." },
   { id: "client-reports", icon: FileBarChart, title: "Client Reports", description: "Branded, export-ready reports your clients will trust." },
-  { id: "security", icon: Lock, title: "Enterprise Security", description: "SOC 2, encryption at rest and in transit, and full audit trails." },
+  { id: "security", icon: Lock, title: "Enterprise Security", description: "Encryption in transit, account-level access control, and full audit trails." },
 ];
 
 export const detailedFeatures: DetailedFeature[] = [
@@ -47,7 +47,7 @@ export const detailedFeatures: DetailedFeature[] = [
       "Executive, one-page, and 30-second formats",
       "Every claim linked to its paragraph in the source",
       "Tone and length tuned for your audience",
-      "Bulk summarize entire matters at once",
+      "Consistent structure across every summary",
     ],
   },
   {
@@ -99,9 +99,9 @@ export const detailedFeatures: DetailedFeature[] = [
       "Convert regulatory documents into living checklists. Track statutory obligations, owners, and due dates in one place.",
     points: [
       "Auto-generated compliance checklists",
-      "Deadline tracking with reminders",
-      "Owner assignment and status",
-      "Evidence and filing attachments",
+      "Statutory deadline and key dates list",
+      "Actionable compliance next steps",
+      "Monetary and penalty highlights",
     ],
   },
   {
@@ -113,8 +113,8 @@ export const detailedFeatures: DetailedFeature[] = [
     points: [
       "Severity-scored risk flags",
       "Penalty and indemnity detection",
-      "Unusual or missing clause alerts",
-      "Portfolio-level risk dashboards",
+      "Compliance and liability risk highlighting",
+      "Risk categorizations (tax, compliance, financial)",
     ],
   },
   {
@@ -125,9 +125,9 @@ export const detailedFeatures: DetailedFeature[] = [
       "Every date, filing, and event automatically arranged into a clear chronology you can share and export.",
     points: [
       "Auto-extracted event chronology",
-      "Deadline and limitation tracking",
-      "Interactive, filterable views",
-      "Export to calendar and reports",
+      "Key date and limitation mapping",
+      "Clear chronological sequential layout",
+      "Export to PDF reports",
     ],
   },
   {
@@ -137,10 +137,10 @@ export const detailedFeatures: DetailedFeature[] = [
     description:
       "Generate branded, client-ready reports in a click — summaries, risks, timelines, and recommendations in a polished format.",
     points: [
-      "Branded PDF and DOCX exports",
-      "Customizable templates",
-      "Multi-document matter reports",
-      "One-click share links",
+      "Branded, print-ready PDF exports",
+      "Preset legal report formats",
+      "Executive, client, and compliance briefs",
+      "Structured legal opinions",
     ],
   },
   {
@@ -151,8 +151,8 @@ export const detailedFeatures: DetailedFeature[] = [
       "Scanned orders, handwritten notes, and image-only PDFs become fully searchable, analyzable text with high-accuracy OCR.",
     points: [
       "High-accuracy OCR for scanned files",
-      "Handwriting and stamp recognition",
-      "Table and form structure extraction",
+      "Printed text and layout recognition",
+      "Document content text extraction",
       "Searchable across every document",
     ],
   },
@@ -175,12 +175,12 @@ export const detailedFeatures: DetailedFeature[] = [
     badge: "Enterprise",
     title: "Enterprise Features",
     description:
-      "Everything IT and security teams need: SSO, granular permissions, data residency, and complete audit trails.",
+      "Everything larger teams need: role-based access, dedicated onboarding, and complete audit trails.",
     points: [
-      "SSO / SAML and SCIM provisioning",
       "Role-based access control",
-      "Data residency and private deployment",
-      "SOC 2 Type II and full audit logs",
+      "Dedicated onboarding & support",
+      "Custom usage limits",
+      "Full audit logs",
     ],
   },
 ];

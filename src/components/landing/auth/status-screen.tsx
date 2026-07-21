@@ -21,8 +21,8 @@ const VARIANTS: Record<
   pending: {
     icon: Clock,
     iconClass: "bg-amber-500/10 text-amber-600",
-    badge: "🟡 Pending approval",
-    badgeClass: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20",
+    badge: "Pending approval",
+    badgeClass: "bg-red-600 text-white border-transparent",
   },
   rejected: {
     icon: XCircle,
@@ -57,11 +57,10 @@ export function StatusScreen({
         <div
           className={cn(
             "mx-auto flex h-20 w-20 items-center justify-center rounded-2xl",
-            v.iconClass,
-            variant === "pending" && "animate-pulse"
+            v.iconClass
           )}
         >
-          <Icon className={cn("h-10 w-10", variant === "pending" && "animate-bounce")} />
+          <Icon className="h-10 w-10" />
         </div>
 
         <h1 className="mt-8 text-2xl font-bold tracking-tight text-foreground">{title}</h1>
@@ -70,7 +69,8 @@ export function StatusScreen({
         <div className="mt-6 flex items-center justify-center">
           <span
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold",
+              "inline-flex items-center gap-1.5 border px-3 py-1 text-xs font-semibold",
+              variant === "pending" ? "rounded-md" : "rounded-full",
               v.badgeClass
             )}
           >

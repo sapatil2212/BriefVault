@@ -36,11 +36,10 @@ export const pricingPlans: PricingPlan[] = [
     features: [
       "Unlimited users",
       "Everything in Professional",
-      "SSO / SAML & SCIM",
-      "Data residency & private deployment",
-      "SOC 2 report & DPA",
+      "Custom usage limits",
+      "DPA on request",
       "Dedicated success manager",
-      "99.9% uptime SLA",
+      "Priority onboarding",
     ],
   },
 ];
